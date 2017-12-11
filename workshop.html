@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+    
+        <title>Workshop - Take Your Catering Business to the Next Level</title>
+    
+        <!-- Bootstrap core CSS -->
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+        <!-- Custom fonts for this template -->
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    
+        <!-- Plugin CSS -->
+        <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+    
+        <!-- Custom styles for this template -->
+        <link href="css/creative.min.css" rel="stylesheet">
+    
+        <!-- FlipClock -->
+        <link rel="stylesheet" href="vendor/flipclock/flipclock.css">
+    
+        <!-- Google Analytics -->
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        
+            ga('create', 'UA-106739387-1', 'auto');
+            ga('send', 'pageview');
+        
+        </script>
+
+        <style>
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+            .flip-clock-label {
+                color: black !important;
+            }
+        </style>
+
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+            <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="index.html"><img src="img/cg-logo.png" style="height: 40px; width: 120px;" /></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#">Free Workshop!</a>
+                </li>
+                </ul>
+            </div>
+            </div>
+        </nav>
+
+        <section>
+            <div class="container">
+                <div class="row">
+                <div class="col-lg-12 mx-auto text-center">
+                    <h2 class="section-heading text-primary">How To Take Your Catering Business to the Next Level</h2>
+                    <hr>
+                    <div id="timer-container">
+                        <div id="personalize"></div>
+                        <h4 style="margin-bottom: 15px;">Workshop Starting In:</h4>
+                        <div style="text-align: center;" >
+                            <div id="timer" style="width: auto; display: inline-block;"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal" id="register-modal">
+            <div class="modal-content container text-center">
+                <h2>How to Take Your Catering Business to the Next Level</h2>
+                <h3>Free Workshop Registration</h3>
+                <form style="margin-bottom: 20px;">
+                    <label>First Name</label><br/>
+                    <input type="text" id="first" /><br/>
+                    <label>Email</label><br/>
+                    <input type="email" id="email"/><br/>
+                    <label>Biggest challenge you currently face in your catering business?</label><br/>
+                    <input type="text" id="challenge" /><br/>
+                </form>
+                <div class='errors'></div>
+                <a id="submit" class="btn btn-primary" style="margin-left: 35%; margin-right: 35%" href="#">Submit</a>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/popper/popper.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Plugin JavaScript -->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+        <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+        <!-- Custom scripts for this template -->
+        <script src="js/creative.min.js"></script>
+
+        <!-- FlipClock -->
+        <script src="vendor/flipclock/flipclock.min.js"></script>
+
+        <script>
+            $(document).ready(() => {
+                const dev = 'http://localhost:3000';
+                const prod = 'http://cater-greater-api.herokuapp.com';
+                const API_URL = prod;
+                let modal = document.getElementById('register-modal');
+
+                if (!localStorage.getItem('first')) {
+                    modal.style.display = "block";
+                } else {
+                    closeModal();
+                    $('#personalize').html(`<h3>Welcome back, ${localStorage.getItem('first')}!</h3><p>Not ${localStorage.getItem('first')}? <a id='reregister' href='#'>Click here</a>`)
+                }
+
+                $('#submit').on('click', (e) => {
+                    e.preventDefault();
+                    $('.errors').empty();
+                    let errors = validateFields();
+
+                    if (errors.length > 0) {
+                        errors.map((error) => {
+                            $('.errors').append(`<p class="text-danger">${error}</p>`);
+                        })
+                        return;
+                    }
+
+                    createUser();
+                });
+
+                $('#reregister').on('click', (e) => {
+                    e.preventDefault();
+                    modal.style.display = "block";
+                    $('#timer').empty();
+                    localStorage.removeItem('first');
+                    localStorage.removeItem('email'); 
+                    localStorage.removeItem('challenge');  
+                });
+
+                function validateFields() {
+                    let first = $('#first').val();
+                    let email = $('#email').val();
+                    let challenge = $('#challenge').val();
+                    let errors = [];
+
+                    let firstIsValid = validateFirst(first);
+                    let emailIsValid = validateEmail(email);
+                    let challengeIsValid = validateChallenge(challenge);
+
+                    if (!firstIsValid) {
+                        errors.push("A valid first name is required.");
+                    }
+
+                    if (!emailIsValid) {
+                        errors.push("A valid email is required.");
+                    }
+
+                    if (!challengeIsValid) {
+                        errors.push("Biggest challenge is required.");
+                    }
+
+                    return errors;
+
+                    function validateFirst(first) {
+                        let letters = /^[A-Za-z]+$/;
+                        return letters.test(first);
+                    }
+
+                    function validateEmail(email) {
+                        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return re.test(email);
+                    }
+
+                    function validateChallenge(challenge) {
+                        return challenge.length > 3;
+                    }
+                }
+
+                function createUser() {
+                    let first = $('#first').val();
+                    let email = $('#email').val();
+                    let challenge = $('#challenge').val();
+                    let user = { user:
+                                    {
+                                        first: first,
+                                        email: email,
+                                        challenge: challenge,
+                                        stage: 'Workshop registration',
+                                        active: true
+                                    }
+                                };
+
+                    $.post(`${API_URL}/users`, user, closeModal);
+                }
+
+                function closeModal(result) {
+                    let modal = document.getElementById('register-modal');
+                    let first = $('#first').val();
+                    let email = $('#email').val();
+                    let challenge = $('#challenge').val();
+
+                    if (!localStorage.getItem('first')) {
+                        localStorage.setItem('id', result.id);
+                        localStorage.setItem('first', first);
+                        localStorage.setItem('email', email);
+                        localStorage.setItem('challenge', challenge);
+                        $('#personalize').html(`<h3>Welcome ${first}!</h3>`);
+                    }
+
+                    modal.style.display = "none";
+
+                    let now = new Date();
+                    let minutes = now.getMinutes();
+                    let sec = now.getSeconds();
+                    let totalSec;
+
+                    for (let i = minutes; minutes < 61; i++) {
+                    if (i % 15 === 0) {
+                        nextTime = i;
+                        break;
+                    }
+                    };
+                    totalSec = (nextTime - minutes - 1 >= 0 ? (nextTime - minutes - 1) : 0) * 60 + (60 - sec);
+
+                    $('#timer').FlipClock(totalSec,{
+                        countdown: true,
+                        clockFace: 'MinuteCounter',
+                        callbacks: {
+                            stop: function() {
+                                confirm("The workshop is starting! Are you ready to join?");
+                            }
+                        }
+                    })
+                    let count = 0;
+                    let timerInterval = setInterval(checkTime, 1000);
+                    
+                    function checkTime() {
+                        if (totalSec - count === 0) {
+                            $('#timer-container').empty();
+                            clearInterval(timerInterval);
+                            startWorkshop();
+                        }
+                        count ++;
+                    }
+
+                    function startWorkshop() {
+                        let videoEmbed = '<iframe src="https://player.vimeo.com/video/246833693?autoplay=1" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+                        $('#timer-container').html(videoEmbed);
+                        $.ajax({
+                            url: `${API_URL}/users/${localStorage.getItem('id')}`,
+                            type: 'PUT',
+                            data: { user: { stage: "Workshop started", workshop_seconds: 0 }},
+                            success: () => { console.log('Workshop started'); setInterval(recordWorkshopProgress, 10000); }
+                        });
+                    }
+                }
+                let workshopSeconds = 0;
+                function recordWorkshopProgress() {
+                    workshopSeconds += 10;
+                    $.ajax({
+                        url: `${API_URL}/users/${localStorage.getItem('id')}`,
+                        type: 'PUT',
+                        data: { user: { stage: "Workshop in progress", workshop_seconds: workshopSeconds }},
+                        success: () => { console.log('Workshop progress saved'); }
+                    });
+                    if (workshopSeconds > 1687) {
+                        window.location.pathname = "/offer.html";
+                    }
+                }
+
+            });
+        </script>
+    </body>
+</html>
