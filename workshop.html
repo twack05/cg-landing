@@ -61,6 +61,26 @@
             .flip-clock-label {
                 color: black !important;
             }
+            .intrinsic-container {
+                position: relative;
+                height: 0;
+                overflow: hidden;
+            }      
+            /* 16x9 Aspect Ratio */
+            .intrinsic-container-16x9 {
+                padding-bottom: 56.25%;
+            }      
+            /* 4x3 Aspect Ratio */
+            .intrinsic-container-4x3 {
+                padding-bottom: 75%;
+            }    
+            .intrinsic-container iframe {
+                position: absolute;
+                top:0;
+                left: 0;
+                width: 100%;
+                height: 80%;
+            }
         </style>
 
     </head>
@@ -75,7 +95,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#">Free Workshop!</a>
+                    <a class="nav-link js-scroll-trigger" href="#"></a>
                 </li>
                 </ul>
             </div>
@@ -132,6 +152,9 @@
 
         <!-- FlipClock -->
         <script src="vendor/flipclock/flipclock.min.js"></script>
+
+        <!--this will include the vimeo api-->
+        <script src="https://f.vimeocdn.com/js/froogaloop2.min.js"></script>    
 
         <script>
             $(document).ready(() => {
@@ -254,8 +277,8 @@
                         break;
                     }
                     };
-                    totalSec = (nextTime - minutes - 1 >= 0 ? (nextTime - minutes - 1) : 0) * 60 + (60 - sec);
-
+                    // totalSec = (nextTime - minutes - 1 >= 0 ? (nextTime - minutes - 1) : 0) * 60 + (60 - sec);
+                    totalSec=5
                     $('#timer').FlipClock(totalSec,{
                         countdown: true,
                         clockFace: 'MinuteCounter',
@@ -278,7 +301,7 @@
                     }
 
                     function startWorkshop() {
-                        let videoEmbed = '<iframe src="https://player.vimeo.com/video/246833693?autoplay=1" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+                        let videoEmbed = '<div class="intrinsic-container intrinsic-container-16x9"><iframe id="workshopplayer" src="https://player.vimeo.com/video/246833693?background=1&mute=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
                         $('#timer-container').html(videoEmbed);
                         $.ajax({
                             url: `${API_URL}/users/${localStorage.getItem('id')}`,
@@ -298,7 +321,12 @@
                         success: () => { console.log('Workshop progress saved'); }
                     });
                     if (workshopSeconds > 1687) {
-                        window.location.pathname = "/offer.html";
+                        $.ajax({
+                            url: `${API_URL}/users/${localStorage.getItem('id')}`,
+                            type: 'PUT',
+                            data: { user: { stage: "Workshop completed", workshop_seconds: workshopSeconds }},
+                            success: () => { window.location.pathname = "/offer.html"; }
+                        });
                     }
                 }
 
