@@ -133,7 +133,9 @@
                     <input type="text" id="challenge" /><br/>
                 </form>
                 <div class='errors'></div>
-                <a id="submit" class="btn btn-primary" style="margin-left: 35%; margin-right: 35%" href="#">Submit</a>
+                <div style="text-align: center">
+                    <a id="submit" class="btn btn-primary btn-xl" style="width: auto; display: inline-block; margin-bottom: 20px; margin-top: 10px;" href="#">Submit</a>
+                </div>
             </div>
         </div>
 
@@ -161,7 +163,10 @@
                 const dev = 'http://localhost:3000';
                 const prod = 'http://cater-greater-api.herokuapp.com';
                 const API_URL = prod;
+                const width = $(window).width();
                 let modal = document.getElementById('register-modal');
+
+                setWidth();
 
                 if (!localStorage.getItem('first')) {
                     modal.style.display = "block";
@@ -193,6 +198,12 @@
                     localStorage.removeItem('email'); 
                     localStorage.removeItem('challenge');  
                 });
+
+                function setWidth() {
+                    if (width < 450) {
+                        $('#timer').css({"zoom": "0.7", "-moz-transform": "0.7", "transform": "0.7"});
+                    }
+                }
 
                 function validateFields() {
                     let first = $('#first').val();
@@ -301,7 +312,7 @@
                     }
 
                     function startWorkshop() {
-                        let videoEmbed = '<div class="intrinsic-container intrinsic-container-16x9"><iframe id="workshopplayer" src="https://player.vimeo.com/video/246833693?background=1&mute=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+                        let videoEmbed = width < 600 ? '<div class="intrinsic-container intrinsic-container-16x9"><iframe id="workshopplayer" src="https://player.vimeo.com/video/246833693" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' : '<div class="intrinsic-container intrinsic-container-16x9"><iframe id="workshopplayer" src="https://player.vimeo.com/video/246833693?background=1&mute=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
                         $('#timer-container').html(videoEmbed);
                         $.ajax({
                             url: `${API_URL}/users/${localStorage.getItem('id')}`,

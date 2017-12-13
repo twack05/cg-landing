@@ -314,6 +314,7 @@
 
     <script>
       $(document).ready(() => {
+        setWidth();
         setTimer();
         let modal = document.getElementById('workshop-modal');
         setTimeout(() => { modal.style.display = "block"; }, 2000);
@@ -326,6 +327,13 @@
         $('.close').on('click', () => {
           modal.style.display = "none";
         });
+
+        function setWidth() {
+          let width = $(window).width();
+          if (width < 450) {
+            $('#timer').css({"zoom": "0.7", "-moz-transform": "0.7", "transform": "0.7"});
+          }
+        }
 
         function setTimer() {
           let now = new Date();
